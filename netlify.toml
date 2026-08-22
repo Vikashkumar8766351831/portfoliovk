@@ -5,6 +5,12 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# SPA fallback — all routes serve index.html so React handles routing client-side
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
 [[headers]]
   for = "/*"
   [headers.values]
