@@ -1,11 +1,13 @@
 export const images = {
-  /** Profile photo — About section */
+  /** Profile photo */
   profile: '/MY.jpeg',
 
   /** Project cover images */
   projects: {
-    'pulse-analytics': '/project1.jpg',
-    'luma-commerce':   '/project2.jpg',
+    'amazing-whiteboard': '/project2.jpg',
+    'mobile-shop':        '/mobileshop.jpg',
+    'wanderlust':         '/wanderlust.jpg',
+    'weather-app':        '/weather.jpg',
   },
 
   /** CERTIFICATE IMAGES */

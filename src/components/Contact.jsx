@@ -17,6 +17,7 @@ function Contact() {
   const [formData, setFormData] = useState(initialState);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle');
+  const [errorMsg, setErrorMsg] = useState('');
 
   const validate = () => {
     const nextErrors = {};
@@ -44,32 +45,35 @@ function Contact() {
 
     setStatus('loading');
 
-    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const serviceId  = import.meta.env.VITE_EMAILJS_SERVICE_ID;
     const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+    const publicKey  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-    // If EmailJS env vars are configured, send a real email; otherwise simulate.
     if (serviceId && templateId && publicKey) {
       try {
         await emailjs.send(
           serviceId,
           templateId,
           {
-            from_name: formData.name,
+            from_name:  formData.name,
             from_email: formData.email,
-            subject: formData.subject,
-            message: formData.message,
+            subject:    formData.subject,
+            message:    formData.message,
+            reply_to:   formData.email,
+            to_name:    'Vikash Kumar',
           },
           publicKey,
         );
         setStatus('success');
         setFormData(initialState);
       } catch (err) {
-        console.error('EmailJS send failed:', err);
+        const msg = err?.text || err?.message || JSON.stringify(err) || 'Unknown error';
+        console.error('EmailJS error:', msg);
+        setErrorMsg(msg);
         setStatus('error');
       }
     } else {
-      // Fallback: simulate success in dev when env vars are not set
+      // Fallback: simulate when env vars missing
       await new Promise((resolve) => setTimeout(resolve, 1400));
       setStatus('success');
       setFormData(initialState);
@@ -206,7 +210,7 @@ function Contact() {
             )}
             {status === 'error' && (
               <p className="inline-flex items-center gap-2 text-sm font-medium text-red-500 dark:text-red-400">
-                <AlertCircle size={18} /> Failed to send. Please try again.
+                <AlertCircle size={18} /> {errorMsg || 'Failed to send. Please try again.'}
               </p>
             )}
           </div>

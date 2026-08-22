@@ -7,10 +7,8 @@ import SocialIcons from './SocialIcons';
 
 function Hero() {
   const [titleIndex, setTitleIndex] = useState(0);
-  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    setIsReady(true);
     const interval = setInterval(() => {
       setTitleIndex((prev) => (prev + 1) % portfolioData.personal.heroTitles.length);
     }, 2200);
